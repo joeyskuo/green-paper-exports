@@ -21,11 +21,15 @@ const pie = d3.pie()
                 .sort(null)
                 .value(d => d.cost);
 
+const colors = d3.scaleOrdinal(d3['schemeSet3']);
+
 const arcPath = d3.arc()
                     .outerRadius(dimensions.radius)              
                     .innerRadius(dimensions.radius/2);      
                     
 const update = (data) => {
+
+    colors.domain(data.map((item) => item.name));
 
     const paths = graph.selectAll('path')
                         .data(pie(data));
@@ -35,7 +39,8 @@ const update = (data) => {
             .attr('class', 'arc')
             .attr('d', arcPath)
             .attr('stroke', '#fff')
-            .attr('stroke-width', 3);
+            .attr('stroke-width', 3)
+            .attr('fill', d => colors(d.data.name));
 
 
 };
