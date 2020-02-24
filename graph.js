@@ -31,6 +31,17 @@ const legend = d3.legendColor()
                     .shapePadding(10)
                     .scale(colors);
 
+const tip = d3.tip()
+                .attr('class', 'tip card')
+                .html((d) => {
+                    let content = `<div class="name">${d.data.name}</div>`;
+                    content += `<div class="cost">${d.data.cost}</div>`;
+                    content += `<div class="delete">Click to delete</div>`;
+                    return content;
+                });                    
+
+graph.call(tip);
+
 const arcPath = d3.arc()
                     .outerRadius(dimensions.radius)              
                     .innerRadius(dimensions.radius/2);      
@@ -142,12 +153,15 @@ function arcUpdate(d) {
 // event handlers
 
 const handleMouseOver = (d, i, n) => {
+    tip.show(d, n[i]);
     d3.select(n[i])
         .transition('changeSliceFill').duration(300)
             .attr('fill-opacity', 0.8);
+
 }
 
 const handleMouseOut = (d, i, n) => {
+    tip.hide();
     d3.select(n[i])
         .transition('changeSliceFill').duration(300)
             .attr('fill-opacity', 1);
