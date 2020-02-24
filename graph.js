@@ -43,10 +43,13 @@ const update = (data) => {
     paths.enter()
             .append('path')
             .attr('class', 'arc')
-            .attr('d', arcPath)
+            // .attr('d', arcPath)
             .attr('stroke', '#fff')
             .attr('stroke-width', 3)
-            .attr('fill', d => colors(d.data.name));
+            .attr('fill', d => colors(d.data.name))
+            .transition()
+                .duration(750)
+                .attrTween('d', arcEnter);
 
 
 };
@@ -78,3 +81,12 @@ db.collection('expenses').onSnapshot(res => {
 
     update(data);
 });                    
+
+const arcEnter = (d) => {
+    var angle = d3.interpolate(d.endAngle, d.startAngle);
+
+    return function(t) {
+        d.startAngle = angle(t);
+        return arcPath(d);
+    }
+}
