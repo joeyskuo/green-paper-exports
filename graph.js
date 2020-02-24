@@ -34,6 +34,12 @@ const update = (data) => {
     const paths = graph.selectAll('path')
                         .data(pie(data));
 
+    // remove unused elements                    
+    paths.exit().remove();
+
+    // update arcpath
+    paths.attr('d', arcPath);
+
     paths.enter()
             .append('path')
             .attr('class', 'arc')
