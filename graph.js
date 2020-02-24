@@ -23,6 +23,14 @@ const pie = d3.pie()
 
 const colors = d3.scaleOrdinal(d3['schemeSet3']);
 
+const legendGroup = svg.append('g')
+                    .attr('transform', `translate(${dimensions.width + 40}, 10)`);
+
+const legend = d3.legendColor()
+                    .shape('circle')
+                    .shapePadding(10)
+                    .scale(colors);
+
 const arcPath = d3.arc()
                     .outerRadius(dimensions.radius)              
                     .innerRadius(dimensions.radius/2);      
@@ -30,6 +38,11 @@ const arcPath = d3.arc()
 const update = (data) => {
 
     colors.domain(data.map((item) => item.name));
+
+    legendGroup.call(legend);
+    legendGroup.selectAll('text')
+                    .attr('fill', 'white');
+
 
     const paths = graph.selectAll('path')
                         .data(pie(data));
