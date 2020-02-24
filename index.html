@@ -13,7 +13,30 @@
         <p class="flow-text grey-text center text-lighten-2">Monthly Expense Tracker</p>
     </header>
 
-    <div class="canvas"></div>
+    <div class="container section">
+        <div class="row">
+            <div class="col s12 m6">
+                <form class="card z-depth-0">
+                    <span class="card-title indigo-text">Add Item:</span>
+                    <div class="input-field">
+                        <input type="text" id="name">
+                        <label for="name">Item Name</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" id="cost">
+                        <label for="name">Item Cost</label>
+                    </div>
+                    <div class="input-field">
+                        <button class="btn-large pink white-text">Add Item</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col s12 m5 push-m1">
+                <div class="canvas"></div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="index.js"></script>
     <script src="graph.js"></script>
