@@ -25,7 +25,20 @@ const arcPath = d3.arc()
                     .outerRadius(dimensions.radius)              
                     .innerRadius(dimensions.radius/2);      
                     
-const update = (data) => console.log(data);
+const update = (data) => {
+
+    const paths = graph.selectAll('path')
+                        .data(pie(data));
+
+    paths.enter()
+            .append('path')
+            .attr('class', 'arc')
+            .attr('d', arcPath)
+            .attr('stroke', '#fff')
+            .attr('stroke-width', 3);
+
+
+};
 
 var data = [];
 
