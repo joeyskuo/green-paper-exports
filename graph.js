@@ -35,10 +35,17 @@ const update = (data) => {
                         .data(pie(data));
 
     // remove unused elements                    
-    paths.exit().remove();
+    paths.exit()
+        .transition()
+            .duration(750)
+            .attrTween('d', arcExit)
+        .remove();
 
     // update arcpath
-    paths.attr('d', arcPath);
+    paths.attr('d', arcPath)
+        .transition()
+            .duration(750)
+            .attrTween('d', arcUpdate);
 
     paths.enter()
             .append('path')
@@ -47,6 +54,7 @@ const update = (data) => {
             .attr('stroke', '#fff')
             .attr('stroke-width', 3)
             .attr('fill', d => colors(d.data.name))
+            .each(function(d) {this._current = d})
             .transition()
                 .duration(750)
                 .attrTween('d', arcEnter);
@@ -89,4 +97,24 @@ const arcEnter = (d) => {
         d.startAngle = angle(t);
         return arcPath(d);
     }
+}
+
+const arcExit = (d) => {
+    var angle = d3.interpolate(d.startAngle, d.endAngle);
+
+    return function(t) {
+        d.startAngle = angle(t);
+        return arcPath(d);
+    }
+}
+
+function arcUpdate(d) {
+    
+    var angle = d3.interpolate(this._current, d);
+    this._current = d;
+
+    return function(t) {
+        return arcPath(angle(t));
+    }
+    
 }
