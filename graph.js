@@ -73,6 +73,11 @@ const update = (data) => {
                 .attrTween('d', arcEnter);
 
 
+    graph.selectAll('path')
+        .on('mouseover', handleMouseOver)
+        .on('mouseout', handleMouseOut)
+        .on('click', handleClick);
+
 };
 
 var data = [];
@@ -103,6 +108,8 @@ db.collection('expenses').onSnapshot(res => {
     update(data);
 });                    
 
+// transitions
+
 const arcEnter = (d) => {
     var angle = d3.interpolate(d.endAngle, d.startAngle);
 
@@ -130,4 +137,23 @@ function arcUpdate(d) {
         return arcPath(angle(t));
     }
     
+}
+
+// event handlers
+
+const handleMouseOver = (d, i, n) => {
+    d3.select(n[i])
+        .transition('changeSliceFill').duration(300)
+            .attr('fill-opacity', 0.8);
+}
+
+const handleMouseOut = (d, i, n) => {
+    d3.select(n[i])
+        .transition('changeSliceFill').duration(300)
+            .attr('fill-opacity', 1);
+}
+
+const handleClick = (d) => {
+    const id = d.data.id;
+    db.collection('expenses').doc(id).delete();
 }
